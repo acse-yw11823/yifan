@@ -15,13 +15,13 @@
 \university{Imperial College London}
 \department{Department of Earth Science and Engineering}
 \course{MSc in Applied Computational Science and Engineering}
-\title{Computational modelling and simulation of a particle in vertical motion}
-\author{Mickey Mouse}
-\email{m.mouse@imperial.ac.uk}
-\githubusername{acse-mm123}
-\supervisors{Dr Bugs Bunny\\
+\title{Seismic imaging: Investigating Spyro}
+\author{Yifan Wu}
+\email{yifan.wu123@imperial.ac.uk}
+\githubusername{acse-yw11823}
+\supervisors{Dr Bugs Bunny
              Prof. Donald Duck}
-\repository{https://github.com/ese-msc-2023/irp-mm123}
+\repository{https://github.com/ese-msc-2023/irp-yw11823}
 
 \begin{document}
 
@@ -29,54 +29,102 @@
 
 % Abstract
 \section*{Abstract}
-\blindtext  % outputs some dummy text
+% \blindtext  % outputs some dummy text
+This project evaluates the efficacy of the Spyro platform, a Python-based finite element method (FEM) software within the Firedrake framework, specifically designed for Full-waveform inversion (FWI) applications. Traditional Finite Difference Methods (FDM), although effective on structured grids, often struggle with complex geological formations (Roberts et al., 2022). This research aims to benchmark Spyro across varied computational architectures and problem scenarios to determine if it can surpass FDM in accuracy, computational efficiency, and handling complex structures. By integrating advanced mesh generation tools like SeismicMesh, the project seeks to enhance computational performance without sacrificing accuracy (Roberts et al., 2022). The findings are expected to offer significant insights into the potential of FEM in seismic imaging, possibly influencing future methodologies in FWI and supporting the development of more refined, efficient subsurface imaging techniques.
 
 % Introduction section
 \section{Introduction}
-\blindtext[3]
+%  \blindtext[3]
+Problem Description: \\
+This project centres around the Spyro platform, a Python-based finite element method (FEM) software developed within the Firedrake framework, designed for Full-waveform inversion (FWI) applications. FWI is a computational technique used to interpret the complete spectrum of data contained in seismograms through iterative optimization (Virieux, Operto, 2009). This project aims to benchmark the Spyro platform across different problems and computational architectures. Additionally, given that finite difference methods (FDM) are traditionally employed in industrial FWI due to their efficacy on structured grids, this project seeks to evaluate whether FEM, as implemented in Spyro, could provide superior results in certain scenarios. 
+
+Significance: \\
+From the benchmarking results, we can discern the strengths and weaknesses of Spyro in different cases. These insights may lead to more accurate and efficient application of Spyro in subsurface imaging production. Moreover, this evaluation will help ascertain the potential of Spyro to offer better insights where FDM might fall short, thus potentially shifting industry methodology preferences in seismic imaging.
+
+Review of Existing Work: \\
+Seismic waves are used to explore geoscientific subsurface information (Virieux, Operto, 2009). High-resolution imaging of subsurface structure has been feasible for short wavelengths using the exploding-reflector concept (Claerbout, 1971). This method provides migration images from short wavelengths that to some extent effectively describe the subsurface composition (Virieux, Operto, 2009), though it struggles with capturing large and intermediate wavelengths (Jannane et al., 1989).
+
+One approach to tackle waveform-fitting imaging problems, prestack depth migration (PSDM,) evolves in terms of operation speed (Weitzman Weitzman, 2014) and image accuracy (Osorio et al., 2012), including the development of a less computationally intensive approach is achieved by Jin et al. (1992) and Lambaré et al. (1992), as cited by Virieux and Operto (2009). Another approach is FWI designed to enhance high-resolution imaging, particularly for complex structures and it has been extended to the research in geophysical to explore the raw material such as oil and gas (Gras et al., 2019). It fully leverages the complete information contained in waves (Virieux et al., 2017) and employs various forward modelling techniques to accurately depict (Louboutin et al., 2017). FWI is still challenging for large and intermediate wavelengths (Vigh et al., 2023), requiring highly accurate initial models and advanced data acquisition strategies like long-offset and transmission data (Mora, 1988). Despite these challenges, it is preferred in geophysics, because it can derive higher resolution imaging (Roberts et al., 2022), more accurate subsurface property models (Tverdokhlebov et al., 2019, Zhang et al., 2020), and greater flexibility (Tverdokhlebov et al., 2019) in analysing complex geological settings. 
+
+When applying FWI in practical settings, two main challenges arise. First, FWI involves solving a least-squares problem between recorded and modeled data, leading to multiple solutions due to the nonconvex nature of the objective function (Lailly et al., 1983, Tarantola, 1984). This nonconvexity can lead to cycle skipping issues, as noted by Roberts et al. (2022) and Virieux (2009). To address this, Adaptive Waveform Inversion (AWI) is used, which Warner et al. (2014) have suggested as a potential solution. The second challenge is the high computational cost of FWI, which is directly related to the simulation of wave propagation (Virieux and Operto, 2009, Fichtner, 2011). It can be effectively mitigated by FDM utilising structured grids to model wave propagation more efficiently (Roberts et al., 2022). Devito is a mature platform that uses FDM to implement the FWI in seismic studies (Louboutin et al., 2019). However, FDM is not efficient for representing irregular geometries and/or large regional/global domain, since it uses structured grids (Liu et al., 2008). This leads to the research and development of FEM which use the unstructured mesh (Moser et al. 1999). The Firedrake package was developed as a useful tool for automating the numerical solution of partial differential essential to Full Waveform Inversion (FWI), using the FEM (NDF-Poli-USP, 2024) and implemented entirely in Python (Rathgeber et al., 2016). 
+
+In the field of seismic modeling, particularly for acoustic waves, the Python library Spyro was developed. Utilising Firedrake, it efficiently solves acoustic wave equations, facilitating simulations of both forward and adjoint wave propagation (Roberts et al., 2022, NDF-Poli-USP, 2024). This advancement, coupled with the use of automated mesh generation tools, as exemplified by SeismicMesh (Roberts et al., 2021b), significantly enhances computational efficiency without compromising the desired accuracy. The current software package offers a robust framework that enables developers to create forward wave propagation simulators for various physical scenarios, such as changes in acoustic density, elasticity, and viscoelasticity (Keith, 2021). However, there is an opportunity for the package to enhance its user-friendliness, facilitating the management of physical parameters and the execution of increasingly complex multivariate Full Waveform Inversions (FWIs).
+
+This project will focus on benchmarking Spyro across different problems and computational architectures to evaluate its performance comprehensively. The aim is to identify specific scenarios where Spyro may outperform traditional FDM in terms of accuracy, computational efficiency, or ability to handle complex structures. The findings from this benchmarking will contribute to a broader understanding of the applicability and limitations of FEM in industrial seismic imaging, potentially paving the way for new methodologies in FWI. This project will not only build on existing work by testing and refining the Spyro platform but also aim to fill gaps in current FWI practices, especially in scenarios where conventional methods struggle due to the complexity of geological formations.
+
+Objectives: \\
+This report aims to rigorously benchmark the Spyro platform across different problems and computing architectures to explore its merits and demerits. Besides, given the prevalent use of the finite difference methods in industry, this report will try to ascertain if, and identify specific scenarios where the finite element method, as implemented by Spyro, proves to be a more advantageous choice.
+
 
 % Another section
 \section{Methods}
-In this work, we wrote a simulation package for calculating the position of a particle in vertical motion as shown in Fig.~\ref{fig:experiment}. We compute the position $y(t)$ at time $t$ using:
+Problem Selection: \\
+Create a mesh optimal in that case, from the different case scenarios, realistic case. Different waves  \\
+Architecture Setup: \\
+Implement Spyro on multiple computing architectures, such as high-performance computing (HPC) environments and standard workstations, to assess its scalability and adaptability. (do I need to consider other computing architectures and how can I learn them?) \\
+Benchmarking Tests: \\
+Measure performance of Spyro in terms of speed, accuracy, and resource consumption. Compare performance metrics with those obtained from finite difference methods. \\
+Case Studies: \\
+Execute three detailed case studies in industrial contexts where FWI is applied. Analyse the excellence and limitations of FEM solvers in these scenarios. \\
+Evaluation Criteria: \\
+Identify criteria to determine when Spyro may be more suitable than finite difference methods. These criteria may include the geological features, the complexity of the subsurface structures, and the specific requirements of the imaging task. \\
 
-% Equation
-\begin{equation}
-    \label{eq:vertical-position}
-    y(t) = v_{0}t - \frac{1}{2}gt^{2},
-\end{equation}
+% % Equation
+% \begin{equation}
+%     \label{eq:vertical-position}
+%     y(t) = v_{0}t - \frac{1}{2}gt^{2},
+% \end{equation}
 
-where $v_{0}$ is the initial velocity, and $g$ is the acceleration due to the Earth's gravity.
+% where $v_{0}$ is the initial velocity, and $g$ is the acceleration due to the Earth's gravity.
 
-% Figure
-\begin{figure}
-    \begin{center}
-        \includegraphics[width=0.2\textwidth]{experiment.jpg}
-    \end{center}
-    \caption{\label{fig:experiment} Particle in vertical motion.}
-\end{figure}
+% % Figure
+% \begin{figure}
+%     \begin{center}
+%         \includegraphics[width=0.2\textwidth]{experiment.jpg}
+%     \end{center}
+%     \caption{\label{fig:experiment} Particle in vertical motion.}
+% \end{figure}
 
-Python code we implemented for computing $y(t)$ is:
+% Python code we implemented for computing $y(t)$ is:
 
-% Code listing
-\begin{lstlisting}[language=Python]
-def position(t, v0=0, g=9.81):
-    """Position of a particle in verticle motion."""
-    return v0*t - 0.5*g*t**2
-\end{lstlisting}
+% % Code listing
+% \begin{lstlisting}[language=Python]
+% def position(t, v0=0, g=9.81):
+%     """Position of a particle in verticle motion."""
+%     return v0*t - 0.5*g*t**2
+% \end{lstlisting}
 
-We made our computational workflows reproducible using Jupyter~\cite{Beg2021}.
+% We made our computational workflows reproducible using Jupyter~\cite{Beg2021}.
 
-\section{Results}
-\blindtext[3]
+\section{Expected \space Outcomes}
+% \blindtext[3]
+Performance metrics highlighting the strengths and weaknesses of Spyro across different problems and architectures, in terms of runtime, accuracy and resource consumption. Compare performance metrics of Spyros with that of FDM and summarise in which cases FEM or FDM excels.
 
-\section{Discussion}
-\blindtext[2]
+\section{Future \space plan}
+% \blindtext[2]
+June 2024: \\
+Week 1: Project setup and resource acquisition. \\
+Week 2-3: Install and configure Spyro on various computing platforms. \\
+Week 4: Develop and optimize meshes for different scenarios. \\
+July 2024: \\
+Week 1-2: Begin preliminary tests; conduct benchmarking tests focusing on speed, accuracy, and resource usage. \\
+Week 3: Execute case studies and intensive benchmarking across computing architectures. \\
+Week 4: Analyze data to determine the effectiveness of Spyro compared to traditional methods. \\
+August 2024: \\
+Week 1: Continue data analysis and begin drafting the final report. \\
+Week 2: Finalize report and prepare presentation summarizing findings and performance metrics. \\
+Week 3: Presentation of project outcomes and submission of all deliverables by August 20. \\
+Deliverables: \\
+Comprehensive report on the performance of Spyro. \\
+Analysis of when Spyro is more advantageous than FDM. \\
+Final presentation of project outcomes, due by August 20. \\
 
-\section{Conclusion}
-\blindtext[2]
+% \section{Conclusion}
+% \blindtext[2]
 
 % References
 \bibliographystyle{plain}
 \bibliography{references}  % BibTeX references are saved in references.bib
+
 
 \end{document}          
